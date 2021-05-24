@@ -1,5 +1,6 @@
 mod kde;
 mod lxde;
+mod xfce;
 
 #[cfg(feature = "from_url")]
 use crate::download_image;
@@ -30,15 +31,7 @@ pub fn get() -> Result<String, Box<dyn std::error::Error>> {
             "dconf",
             &["read", "/org/mate/desktop/background/picture-filename"],
         ),
-        "XFCE" => get_stdout(
-            "xfconf-query",
-            &[
-                "-c",
-                "xfce4-desktop",
-                "-p",
-                "/backdrop/screen0/monitor0/workspace0/last-image",
-            ],
-        ),
+        "XFCE" => xfce::get(),
         "LXDE" => lxde::get(),
         "Deepin" => parse_dconf(
             "dconf",
@@ -81,17 +74,7 @@ pub fn set_from_path(path: &str) -> Result<(), Box<dyn std::error::Error>> {
                 &enquote::enquote('"', &path),
             ],
         ),
-        "XFCE" => run(
-            "xfconf-query",
-            &[
-                "-c",
-                "xfce4-desktop",
-                "-p",
-                "/backdrop/screen0/monitor0/workspace0/last-image",
-                "-s",
-                &path,
-            ],
-        ),
+        "XFCE" => xfce::set(path),
         "LXDE" => run("pcmanfm", &["-w", &path]),
         "Deepin" => run(
             "dconf",
