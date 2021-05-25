@@ -17,7 +17,7 @@ pub fn get() -> Result<String, Box<dyn std::error::Error>> {
 
 /// Sets the wallpaper for XFCE.
 pub fn set(path: &str) -> Result<(), Box<dyn std::error::Error>> {
-    for xfce_path in get_last_image_paths()? {
+    for xfce_path in dbg!(get_last_image_paths()?) {
         run(
             "xfconf-query",
             &["-c", "xfce4-desktop", "-p", &xfce_path, "-s", &path],
