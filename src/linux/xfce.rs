@@ -27,15 +27,7 @@ pub fn set(path: &str) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn get_last_image_paths() -> Result<Vec<String>, Box<dyn std::error::Error>> {
-    let str = get_stdout(
-        "xfconf-query",
-        &[
-            "-c",
-            "xfce4-desktop",
-            "-p",
-            "/backdrop/screen0/monitor0/last-image",
-        ],
-    )?;
+    let str = get_stdout("xfconf-query", &["-c", "xfce4-desktop"])?;
     Ok(str
         .split("\n")
         .filter(|s| s.ends_with("/last-image"))
